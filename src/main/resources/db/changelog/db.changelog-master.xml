@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <changeSet id="14-11-2023-11-49" author="nouhaila">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="isAdmin" type="BOOLEAN"/>
+        </createTable>
+        <addAutoIncrement
+                columnDataType="BIGINT"
+                columnName="id"
+                defaultOnNull="true"
+                generationType="Default"
+                tableName="users"/>
+    </changeSet>
+
+    <changeSet id="14-11-2023-11-53" author="nouhaila">
+        <createTable tableName="equipments">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="quantity" type="INT"/>
+            <column name="status" type="VARCHAR(255)"/>
+        </createTable>
+        <addAutoIncrement
+                columnDataType="BIGINT"
+                columnName="id"
+                defaultOnNull="true"
+                generationType="Default"
+                tableName="equipments"/>
+    </changeSet>
+
+
+    <changeSet id="14-11-2023-13-04" author="nouhaila">
+        <createTable tableName="reservations">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="id_equipment" type="BIGINT"/>
+            <column name="id_client" type="BIGINT"/>
+            <column name="start_date" type="DATE"/>
+            <column name="end_date" type="DATE"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="14-11-2023-12-05" author="nouhaila">
+        <addForeignKeyConstraint
+                baseTableName="reservations"
+                baseColumnNames="id_equipment"
+                constraintName="fk_reservation_equipment"
+                referencedTableName="equipments"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+
+        <addForeignKeyConstraint
+                baseTableName="reservations"
+                baseColumnNames="id_client"
+                constraintName="fk_reservation_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+    </changeSet>
+
+
+    <changeSet  author="Jamal"  id="renameColumn">
+        <dropForeignKeyConstraint baseTableName="reservations"
+                                  baseColumnNames="id_client"
+                                  constraintName="fk_reservation_user"/>
+        <renameColumn
+                columnDataType="BIGINT"
+                newColumnName="client_id"
+                oldColumnName="id_client"
+                remarks="renameColumn"
+                tableName="reservations"/>
+        <addForeignKeyConstraint
+                baseTableName="reservations"
+                baseColumnNames="client_id"
+                constraintName="fk_reservation_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                onUpdate="CASCADE"/>
+    </changeSet>
+
+    <changeSet author="Jamal" id="addAutoIncrement">
+        <addAutoIncrement
+                columnDataType="BIGINT"
+                columnName="id"
+                defaultOnNull="true"
+                generationType="Default"
+                tableName="reservations"/>
+    </changeSet>
+
+    <changeSet id="edit_is_admin_column" author="Jamal">
+
+    <renameColumn
+            tableName="users"
+            columnDataType="BOOLEAN"
+            oldColumnName="isAdmin"
+            newColumnName="is_admin"/>
+    </changeSet>
+
+    <changeSet id="16-11-2023-11-11" author="nouhaila">
+        <addColumn tableName="equipments">
+            <column name="price" type="DOUBLE"/>
+        </addColumn>
+
+    </changeSet>
+
+</databaseChangeLog>
