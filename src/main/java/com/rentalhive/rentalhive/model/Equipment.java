@@ -10,7 +10,8 @@ public class Equipment {
     private int id;
     private String name;
     private int quantity;
-    private EquipmentStatus status;
     private Double price;
+    private EquipmentStatus status;
+    private EquipmentType equipmentType;
 
 }
