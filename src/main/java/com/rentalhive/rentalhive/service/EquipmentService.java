@@ -3,7 +3,6 @@ package com.rentalhive.rentalhive.service;
 import com.rentalhive.rentalhive.exceptions.*;
 import com.rentalhive.rentalhive.model.Equipment;
 import com.rentalhive.rentalhive.model.EquipmentStatus;
-import com.rentalhive.rentalhive.model.Reservation;
 import com.rentalhive.rentalhive.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
