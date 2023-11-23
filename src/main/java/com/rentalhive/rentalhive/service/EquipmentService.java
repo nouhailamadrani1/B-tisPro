@@ -3,6 +3,7 @@ package com.rentalhive.rentalhive.service;
 import com.rentalhive.rentalhive.exceptions.*;
 import com.rentalhive.rentalhive.model.Equipment;
 import com.rentalhive.rentalhive.model.EquipmentStatus;
+import com.rentalhive.rentalhive.model.EquipmentType;
 import com.rentalhive.rentalhive.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class EquipmentService {
         validateEquipmentQuantity(equipment.getQuantity());
         validateEquipmentPrice(equipment.getPrice());
         validateEquipmentStatus(equipment.getStatus());
+        validateEquipmentType(equipment.getEquipmentType());
 
         // Save the equipment to the database
         return equipmentRepository.save(equipment);
@@ -45,12 +47,14 @@ public class EquipmentService {
         validateEquipmentQuantity(equipment.getQuantity());
         validateEquipmentPrice(equipment.getPrice());
         validateEquipmentStatus(equipment.getStatus());
+        validateEquipmentType(equipment.getEquipmentType());
 
         // Update the existing equipment
         existingEquipment.setName(equipment.getName());
         existingEquipment.setQuantity(equipment.getQuantity());
         existingEquipment.setPrice(equipment.getPrice());
         existingEquipment.setStatus(equipment.getStatus());
+        existingEquipment.setEquipmentType(equipment.getEquipmentType());
 
         // Save the updated equipment to the database
         return equipmentRepository.save(existingEquipment);
@@ -86,6 +90,11 @@ public class EquipmentService {
     private void validateEquipmentStatus(EquipmentStatus status) {
         if (status == null) {
             throw new InvalidEquipmentStatusException("Equipment status must not be null.");
+        }
+    }
+    private void validateEquipmentType(EquipmentType type) {
+        if (type == null) {
+            throw new InvalidEquipmentTypeException("Equipment type must not be null.");
         }
     }
 }
