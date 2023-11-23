@@ -2,10 +2,7 @@ package com.rentalhive.rentalhive.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -14,5 +11,12 @@ public class Estimate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private Double estimatedCost;
+    @Enumerated(EnumType.STRING)
     private EstimateStatus estimateStatus;
+    @ManyToOne
+    @JoinColumn(name = "rental_request_id")
+    private RentalRequest rentalRequest;
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private User admin;
 }

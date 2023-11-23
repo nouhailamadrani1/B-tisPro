@@ -2,10 +2,7 @@ package com.rentalhive.rentalhive.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -15,5 +12,13 @@ public class Files {
     private int id;
     private String path;
     private String entity;
-
+    @ManyToOne
+    @JoinColumn(name = "equipment_id")
+    private Equipment equipment;
+    @ManyToOne
+    @JoinColumn(name = "rental_request_id")
+    private RentalRequest rentalRequest;
+    @ManyToOne
+    @JoinColumn(name = "estimate_id")
+    private Estimate estimate;
 }

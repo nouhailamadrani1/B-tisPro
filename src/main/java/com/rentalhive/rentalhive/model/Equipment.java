@@ -11,7 +11,9 @@ public class Equipment {
     private String name;
     private int quantity;
     private Double price;
+    @Enumerated(EnumType.STRING)
     private EquipmentStatus status;
+    @Enumerated(EnumType.STRING)
     private EquipmentType equipmentType;
 
 }
