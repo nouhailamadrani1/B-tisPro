@@ -1,6 +1,7 @@
 package com.rentalhive.rentalhive.service;
 
 import com.rentalhive.rentalhive.model.Estimate;
+import com.rentalhive.rentalhive.model.RentalRequest;
 import com.rentalhive.rentalhive.repository.EstimateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,4 +35,5 @@ public class EstimateService {
     public void deleteEstimate(int id) {
         estimateRepository.deleteById(id);
     }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/estimate")
@@ -20,7 +21,7 @@ public class EstimateController {
     }
 
     @GetMapping("/{id}")
-    public Estimate getEstimateById(@PathVariable int id) {
+    public Optional<Estimate> getEstimateById(@PathVariable int id) {
         return estimateService.getEstimateById(id);
     }
 
