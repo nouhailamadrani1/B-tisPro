@@ -1,11 +1,14 @@
 package com.rentalhive.rentalhive.model;
 
+import com.rentalhive.rentalhive.service.ContractService;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+
+
 public class Estimate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
