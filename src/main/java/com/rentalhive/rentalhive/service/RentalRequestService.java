@@ -4,7 +4,12 @@ import com.rentalhive.rentalhive.model.RentalRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.rentalhive.rentalhive.repository.RentalRequestRepository;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -13,24 +18,48 @@ public class RentalRequestService {
     @Autowired
     private RentalRequestRepository rentalRequestRepository;
 
-    private List<RentalRequest> getAllRentalRequest() {
+    public List<RentalRequest> getAllRentalRequests() {
         return rentalRequestRepository.findAll();
     }
 
-    private RentalRequest getRentalRequestById(int id) {
+    public RentalRequest getRentalRequestById(int id) {
         return rentalRequestRepository.findById(id).orElse(null);
     }
 
-    private RentalRequest addRentalRequest(RentalRequest rentalRequest) {
+    public RentalRequest addRentalRequest(RentalRequest rentalRequest) {
+
+        if (rentalRequest.getStart_date().after(rentalRequest.getEnd_date())) {
+            throw new RuntimeException("Start date cannot be after end date");
+        } else if (rentalRequest.getStart_date().before(new Date())) {
+            throw new RuntimeException("Start date cannot be in the past");
+        } else if (rentalRequest.getEnd_date().before(new Date())) {
+            throw new RuntimeException("End date cannot be in the past");
+        } else if (rentalRequest.getStart_date().equals(rentalRequest.getEnd_date())) {
+            throw new RuntimeException("Start date cannot be the same as end date");
+        } else if (!rentalRequestRepository.isAvailable(rentalRequest.getEquipment().getId(), rentalRequest.getStart_date(), rentalRequest.getEnd_date())) {
+            throw new RuntimeException("Equipment is not available for the given dates");
+        }
+
         return rentalRequestRepository.save(rentalRequest);
     }
 
-    private RentalRequest updateRentalRequest(int id,RentalRequest rentalRequest) {
+    public RentalRequest updateRentalRequest(int id,RentalRequest rentalRequest) {
         rentalRequest.setId(id);
         return rentalRequestRepository.save(rentalRequest);
     }
 
-    private void deleteRentalRequest(int id) {
+    public void deleteRentalRequest(int id) {
         rentalRequestRepository.deleteById(id);
+    }
+
+    public void uploadFile(MultipartFile file) {
+        try {
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get( "src/main/resources/files/"+ file.getOriginalFilename());
+            Files.write(path, bytes);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+        }
     }
 }
