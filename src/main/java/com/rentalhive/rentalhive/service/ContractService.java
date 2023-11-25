@@ -14,17 +14,21 @@ public class ContractService {
     @Autowired
     private ContractRepository contractRepository;
 
-    public Estimate checkEstimateStatusUpdate(int id) {
+    public String checkEstimateStatusUpdate(int id) {
         Estimate estimate = contractRepository.findById(id);
-        if (estimate.getEstimateStatus() == EstimateStatus.Approved) {
+
+        if (estimate != null && estimate.getEstimateStatus() == EstimateStatus.Approved) {
             return generateContract(estimate);
+        } else {
+            return "Estimate not found or not approved";
         }
-        return estimate;
     }
 
-    private Estimate generateContract(Estimate estimate) {
-        // Your logic to generate a contract based on the estimate
-        return estimate;
+    private String generateContract(Estimate estimate) {
+        return "ContractService{" +
+                "Cost=" + estimate.getEstimatedCost() +
+                ", client=" + estimate.getRentalRequest().toString() +
+                '}';
     }
 }
 
