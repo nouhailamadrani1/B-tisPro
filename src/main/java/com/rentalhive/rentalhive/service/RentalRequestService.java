@@ -18,6 +18,9 @@ public class RentalRequestService {
     @Autowired
     private RentalRequestRepository rentalRequestRepository;
 
+    @Autowired
+    private FileService fileService;
+
     public List<RentalRequest> getAllRentalRequests() {
         return rentalRequestRepository.findAll();
     }
@@ -52,7 +55,7 @@ public class RentalRequestService {
         rentalRequestRepository.deleteById(id);
     }
 
-    public void uploadFile(MultipartFile file) {
+    public void uploadFile(MultipartFile file, int rentalRequestId) {
         try {
             // Get the file and save it somewhere
             byte[] bytes = file.getBytes();
@@ -61,5 +64,13 @@ public class RentalRequestService {
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
+
+        com.rentalhive.rentalhive.model.Files file1 = new com.rentalhive.rentalhive.model.Files();
+        file1.setPath("src/main/resources/files/"+ file.getOriginalFilename());
+        file1.setRentalRequest(getRentalRequestById(rentalRequestId));
+
+        fileService.saveFile(file1);
     }
+
+
 }
