@@ -53,6 +53,10 @@ public class EstimateService {
         estimateRepository.save(estimate);
     }
 
+    public void updateEstimateStatus(int id , Estimate estimate){
+
+    }
+
     public void deleteEstimate(int id) {
         Optional<Estimate> estimate = getEstimateById(id);
 
