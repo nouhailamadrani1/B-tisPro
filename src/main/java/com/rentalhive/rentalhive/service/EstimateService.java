@@ -34,7 +34,8 @@ public class EstimateService {
     }
 
     public Estimate addEstimate(Estimate estimate) {
-        // Set estimateStatus to Pending
+
+        validateAdminRole(estimate.getAdmin().getId());
         estimate.setEstimateStatus(EstimateStatus.Pending);
 
         // Calculate estimatedCost based on rental request start and end dates
