@@ -31,8 +31,8 @@ public class EstimateController {
     }
 
     @PutMapping("/{id}")
-    public Estimate updateEstimate(@PathVariable int id, @RequestBody Estimate estimate) {
-        return estimateService.updateEstimate(id, estimate);
+    public void updateEstimate(@PathVariable int id, @RequestBody Estimate estimate) {
+        estimateService.updateEstimate(id, estimate);
     }
 
     @DeleteMapping("/{id}")

@@ -1,10 +1,7 @@
 package com.rentalhive.rentalhive.service;
 
 import com.rentalhive.rentalhive.exceptions.InvalidEstimateException;
-import com.rentalhive.rentalhive.model.Estimate;
-import com.rentalhive.rentalhive.model.EstimateStatus;
-import com.rentalhive.rentalhive.model.RentalRequest;
-import com.rentalhive.rentalhive.model.RentalRequestStatus;
+import com.rentalhive.rentalhive.model.*;
 import com.rentalhive.rentalhive.repository.EstimateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +21,10 @@ public class EstimateService {
     @Autowired
     private RentalRequestService rentalRequestService;
 
+    @Autowired
+    private UserService userService;
+
+
     public List<Estimate> getAllEstimates() {
         return (List<Estimate>) estimateRepository.findAll();
     }
@@ -42,9 +43,14 @@ public class EstimateService {
         return estimateRepository.save(estimate);
     }
 
-    public Estimate updateEstimate(int id, Estimate estimate) {
+    public void updateEstimate(int id, Estimate estimate) {
+
+        validateAdminRole(estimate.getAdmin().getId());
+        validateEstimatedCost(estimate);
+
         estimate.setId(id);
-        return estimateRepository.save(estimate);
+
+        estimateRepository.save(estimate);
     }
 
     public void deleteEstimate(int id) {
@@ -79,6 +85,24 @@ public class EstimateService {
         Double estimatedCost = days * equipmentPrice;
 
         estimate.setEstimatedCost(estimatedCost);
+    }
+
+    private void validateEstimatedCost(Estimate estimate) {
+
+        Double estimatedCost = estimate.getEstimatedCost();
+
+        if (estimatedCost == null || estimatedCost < 0 || Double.isNaN(estimatedCost) || Double.isInfinite(estimatedCost)) {
+            throw new InvalidEstimateException("Invalid estimated cost. Please provide a valid non-negative double value.");
+        }
+    }
+
+    private void validateAdminRole(int adminId) {
+        User admin = userService.getUserById(adminId)
+                .orElseThrow(() -> new InvalidEstimateException("Admin not found with ID: " + adminId));
+
+        if (!admin.getRole().equals(Role.Manager)) {
+            throw new InvalidEstimateException("The provided admin does not have the required role 'Manager'.");
+        }
     }
 
 }
