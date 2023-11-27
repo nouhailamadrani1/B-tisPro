@@ -48,8 +48,12 @@ public class EstimateService {
     }
 
     public void deleteEstimate(int id) {
-        RentalRequest rentalRequest = rentalRequestService.getRentalRequestById(id);
+        Optional<Estimate> estimate = getEstimateById(id);
+
+        RentalRequest rentalRequest = estimate.get().getRentalRequest();
+
         rentalRequest.setRentalRequestStatus(RentalRequestStatus.InProgress);
+
         estimateRepository.deleteById(id);
     }
 
