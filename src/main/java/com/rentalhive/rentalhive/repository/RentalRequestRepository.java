@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
+import java.util.List;
 
 public interface RentalRequestRepository extends JpaRepository<RentalRequest, Integer> {
 
@@ -15,4 +16,5 @@ public interface RentalRequestRepository extends JpaRepository<RentalRequest, In
             @Param("start_date") Date startDate,
             @Param("end_date") Date endDate
     );
+    List<RentalRequest> findRentalRequestsByClientId(int clientId);
 }

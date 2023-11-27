@@ -22,4 +22,5 @@ public class Estimate {
     @ManyToOne
     @JoinColumn(name = "admin_id")
     private User admin;
+    private boolean archived;
 }

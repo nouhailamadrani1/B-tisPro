@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -25,7 +26,8 @@ public class RentalRequest {
     @JoinColumn(name = "equipment_id")
     private Equipment equipment;
 
-
+    @OneToMany(mappedBy = "rentalRequest")
+    private List<Estimate> estimates;
 
 
 }
