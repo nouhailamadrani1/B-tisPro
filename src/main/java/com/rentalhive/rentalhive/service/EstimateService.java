@@ -6,9 +6,9 @@ import com.rentalhive.rentalhive.repository.EstimateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -51,10 +51,6 @@ public class EstimateService {
         estimate.setId(id);
 
         estimateRepository.save(estimate);
-    }
-
-    public void updateEstimateStatus(int id , Estimate estimate){
-
     }
 
     public void deleteEstimate(int id) {

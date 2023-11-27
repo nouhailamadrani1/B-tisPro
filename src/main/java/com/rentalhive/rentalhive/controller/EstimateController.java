@@ -35,11 +35,6 @@ public class EstimateController {
         estimateService.updateEstimate(id, estimate);
     }
 
-    @PutMapping("/setStatus/{id}")
-    public void updateEstimateStatus(@PathVariable int id , @RequestBody Estimate estimate){
-        estimateService.updateEstimateStatus(id,estimate);
-    }
-
     @DeleteMapping("/{id}")
     public void deleteEstimate(@PathVariable int id) {
         estimateService.deleteEstimate(id);
