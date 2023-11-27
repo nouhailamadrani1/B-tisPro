@@ -4,6 +4,7 @@ import com.rentalhive.rentalhive.exceptions.InvalidEstimateException;
 import com.rentalhive.rentalhive.model.Estimate;
 import com.rentalhive.rentalhive.model.EstimateStatus;
 import com.rentalhive.rentalhive.model.RentalRequest;
+import com.rentalhive.rentalhive.model.RentalRequestStatus;
 import com.rentalhive.rentalhive.repository.EstimateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,10 +33,11 @@ public class EstimateService {
     }
 
     public Estimate addEstimate(Estimate estimate) {
-        // Set estimateStatus to "Pending"
+        // Set estimateStatus to Pending
         estimate.setEstimateStatus(EstimateStatus.Pending);
+
         // Calculate estimatedCost based on rental request start and end dates
-//        calculateEstimatedCost(estimate);
+        calculateEstimatedCost(estimate);
 
         return estimateRepository.save(estimate);
     }
@@ -46,6 +48,8 @@ public class EstimateService {
     }
 
     public void deleteEstimate(int id) {
+        RentalRequest rentalRequest = rentalRequestService.getRentalRequestById(id);
+        rentalRequest.setRentalRequestStatus(RentalRequestStatus.InProgress);
         estimateRepository.deleteById(id);
     }
 
@@ -59,8 +63,8 @@ public class EstimateService {
         Date startDate = rentalRequest.getStart_date();
         Date endDate = rentalRequest.getEnd_date();
 
-        // Assuming Equipment has a price property
-        Double equipmentPrice = estimate.getRentalRequest().getEquipment().getPrice();
+
+        Double equipmentPrice = rentalRequest.getEquipment().getPrice();
 
         // Convert Date objects to Instant (representing a point in time)
         Instant startInstant = startDate.toInstant();
