@@ -8,6 +8,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    @Enumerated(EnumType.STRING)
     private Role role;
     private String email;
     private String numberPhone;

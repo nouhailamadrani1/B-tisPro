@@ -25,9 +25,17 @@ public class ContractService {
     }
 
     private String generateContract(Estimate estimate) {
-        return "ContractService{" +
+        return "Contract {" +
                 "Cost=" + estimate.getEstimatedCost() +
-                ", client=" + estimate.getRentalRequest().toString() +
+                "client=" + estimate.getRentalRequest().getClient().getName() +
+                "email=" + estimate.getRentalRequest().getClient().getEmail() +
+                "Number Phone=" + estimate.getRentalRequest().getClient().getNumberPhone() +
+                "Start date=" + estimate.getRentalRequest().getStart_date() +
+                "End date=" + estimate.getRentalRequest().getEnd_date() +
+                "Equipment Name=" + estimate.getRentalRequest().getEquipment().getName() +
+                "Equipment Type=" + estimate.getRentalRequest().getEquipment().getEquipmentType() +
+
+
                 '}';
     }
 }
