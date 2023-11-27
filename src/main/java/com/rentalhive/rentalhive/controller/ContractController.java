@@ -24,6 +24,15 @@ public class ContractController {
         List<Estimate> approvedEstimates = contractService.getAllApprovedEstimatesForClient(id);
         return ResponseEntity.ok(approvedEstimates);
     }
+    @PutMapping("/archiveContract/{id}")
+    public ResponseEntity<String> archiveContract(@PathVariable int id) {
+        return ResponseEntity.ok(contractService.archiveContract(id));
+    }
+    @GetMapping("/getAllNonArchivedEstimatesForClient/{id}")
+    public ResponseEntity<List<Estimate>> getAllNonArchivedEstimatesForClient(@PathVariable int id) {
+        List<Estimate> nonArchivedEstimates = contractService.getAllNonArchivedEstimatesForClient(id);
+        return ResponseEntity.ok(nonArchivedEstimates);
+    }
 
 }
 

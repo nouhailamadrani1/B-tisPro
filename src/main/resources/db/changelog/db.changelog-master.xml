@@ -83,6 +83,10 @@
             </column>
         </createTable>
     </changeSet>
-
+    <changeSet id="addArchivedColumn" author="nouhaila">
+        <addColumn tableName="estimate">
+            <column name="archived" type="boolean" defaultValue="false" />
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

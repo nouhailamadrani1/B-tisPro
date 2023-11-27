@@ -59,5 +59,33 @@ public class ContractService {
 
                 '}';
     }
+
+    public String archiveContract(int id) {
+        Estimate estimate = contractRepository.findById(id);
+
+        if (estimate != null) {
+            estimate.setArchived(true);
+            contractRepository.save(estimate);
+            return "Contrat archivé avec succès.";
+        } else {
+            return "Contrat non trouvé.";
+        }
+    }
+    public List<Estimate> getAllNonArchivedEstimatesForClient(int clientId) {
+        List<Estimate> nonArchivedEstimates = new ArrayList<>();
+
+        List<RentalRequest> rentalRequests = rentalRequestRepository.findRentalRequestsByClientId(clientId);
+
+        for (RentalRequest rentalRequest : rentalRequests) {
+            List<Estimate> estimates = rentalRequest.getEstimates();
+            for (Estimate estimate : estimates) {
+                if (!estimate.isArchived()) {
+                    nonArchivedEstimates.add(estimate);
+                }
+            }
+        }
+
+        return nonArchivedEstimates;
+    }
 }
 
