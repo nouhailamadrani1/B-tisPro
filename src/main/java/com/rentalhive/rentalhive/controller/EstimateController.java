@@ -3,6 +3,7 @@ package com.rentalhive.rentalhive.controller;
 import com.rentalhive.rentalhive.model.Estimate;
 import com.rentalhive.rentalhive.service.EstimateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,13 +36,21 @@ public class EstimateController {
         estimateService.updateEstimate(id, estimate);
     }
 
-    @PutMapping("/setStatus/{id}")
-    public void updateEstimateStatus(@PathVariable int id , @RequestBody Estimate estimate){
-        estimateService.updateEstimateStatus(id,estimate);
-    }
-
     @DeleteMapping("/{id}")
     public void deleteEstimate(@PathVariable int id) {
         estimateService.deleteEstimate(id);
     }
+
+    @PutMapping("/{id}/updateStatus")
+    public ResponseEntity<Estimate> updateEstimateStatus(
+            @PathVariable int id,
+            @RequestBody Estimate updatedEstimate,
+            @RequestParam int userId) {
+
+        // Rest of your code
+        Estimate updatedEstimateResult = estimateService.updateEstimateStatus(id, updatedEstimate, userId);
+        return ResponseEntity.ok(updatedEstimateResult);
+    }
+
+
 }

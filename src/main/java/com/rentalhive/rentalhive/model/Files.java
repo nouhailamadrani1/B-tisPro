@@ -1,10 +1,13 @@
 package com.rentalhive.rentalhive.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Files {
     @Id
