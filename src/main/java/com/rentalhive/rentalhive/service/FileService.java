@@ -30,4 +30,5 @@ public class FileService {
     public List<Files> getAllByRentalRequestId(int rentalRequestId) {
         return fileRepository.findByRentalRequestId(rentalRequestId);
     }
+
 }

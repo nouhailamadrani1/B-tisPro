@@ -1,6 +1,6 @@
 package com.rentalhive.rentalhive.controller;
 import com.rentalhive.rentalhive.model.Estimate;
-import com.rentalhive.rentalhive.service.ContractService;
+import com.rentalhive.rentalhive.service.ContractServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import java.util.List;
 public class ContractController {
 
     @Autowired
-    private ContractService contractService;
+    private ContractServiceInterface contractService;
 
     @GetMapping ("/getContract/{id}")
     public ResponseEntity<String> getContract(@PathVariable int id) {
@@ -33,6 +33,7 @@ public class ContractController {
         List<Estimate> nonArchivedEstimates = contractService.getAllNonArchivedEstimatesForClient(id);
         return ResponseEntity.ok(nonArchivedEstimates);
     }
+
 
 }
 

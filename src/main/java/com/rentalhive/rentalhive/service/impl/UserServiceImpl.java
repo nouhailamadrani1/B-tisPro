@@ -1,7 +1,8 @@
-package com.rentalhive.rentalhive.service;
+package com.rentalhive.rentalhive.service.impl;
 
 import com.rentalhive.rentalhive.model.User;
 import com.rentalhive.rentalhive.repository.UserRepository;
+import com.rentalhive.rentalhive.service.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements UserServiceInterface {
 
     @Autowired
     private UserRepository userRepository;

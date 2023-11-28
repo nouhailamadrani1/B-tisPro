@@ -1,7 +1,7 @@
 package com.rentalhive.rentalhive.controller;
 
 import com.rentalhive.rentalhive.model.User;
-import com.rentalhive.rentalhive.service.UserService;
+import com.rentalhive.rentalhive.service.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceInterface userService;
 
     @GetMapping
     public List<User> getAllUsers() {

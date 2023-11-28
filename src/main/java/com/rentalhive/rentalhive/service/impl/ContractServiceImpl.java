@@ -1,10 +1,11 @@
-package com.rentalhive.rentalhive.service;
+package com.rentalhive.rentalhive.service.impl;
 
 import com.rentalhive.rentalhive.model.Estimate;
 import com.rentalhive.rentalhive.model.EstimateStatus;
 import com.rentalhive.rentalhive.model.RentalRequest;
 import com.rentalhive.rentalhive.repository.ContractRepository;
 import com.rentalhive.rentalhive.repository.RentalRequestRepository;
+import com.rentalhive.rentalhive.service.ContractServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 
 @Service
-public class ContractService {
+public class ContractServiceImpl implements ContractServiceInterface {
 
     @Autowired
     private ContractRepository contractRepository;

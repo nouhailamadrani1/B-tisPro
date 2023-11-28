@@ -3,12 +3,12 @@ package com.rentalhive.rentalhive.service;
 import com.rentalhive.rentalhive.exceptions.InvalidEstimateException;
 import com.rentalhive.rentalhive.model.*;
 import com.rentalhive.rentalhive.repository.EstimateRepository;
+import com.rentalhive.rentalhive.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +22,7 @@ public class EstimateService {
     private RentalRequestService rentalRequestService;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
 
     public List<Estimate> getAllEstimates() {
