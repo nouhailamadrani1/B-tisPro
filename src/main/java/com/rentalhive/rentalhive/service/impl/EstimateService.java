@@ -1,8 +1,9 @@
-package com.rentalhive.rentalhive.service;
+package com.rentalhive.rentalhive.service.impl;
 
 import com.rentalhive.rentalhive.exceptions.InvalidEstimateException;
 import com.rentalhive.rentalhive.model.*;
 import com.rentalhive.rentalhive.repository.EstimateRepository;
+import com.rentalhive.rentalhive.service.EstimateServiceInterface;
 import com.rentalhive.rentalhive.service.impl.RentalRequestServiceImpl;
 import com.rentalhive.rentalhive.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EstimateService {
+public class EstimateService implements EstimateServiceInterface {
 
     @Autowired
     private EstimateRepository estimateRepository;
@@ -40,7 +41,6 @@ public class EstimateService {
         validateAdminRole(estimate.getAdmin().getId());
         estimate.setEstimateStatus(EstimateStatus.Pending);
 
-        // Calculate estimatedCost based on rental request start and end dates
         calculateEstimatedCost(estimate);
 
         return estimateRepository.save(estimate);
@@ -117,8 +117,6 @@ public class EstimateService {
 
         // Update the estimate status
         existingEstimate.setEstimateStatus(updatedEstimate.getEstimateStatus());
-
-        // Additional validation or business logic can be added here if needed
 
         return estimateRepository.save(existingEstimate);
     }

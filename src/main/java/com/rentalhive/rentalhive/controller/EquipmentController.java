@@ -2,7 +2,7 @@ package com.rentalhive.rentalhive.controller;
 
 
 import com.rentalhive.rentalhive.model.Equipment;
-import com.rentalhive.rentalhive.service.EquipmentService;
+import com.rentalhive.rentalhive.service.impl.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

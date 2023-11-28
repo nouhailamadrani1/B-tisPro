@@ -1,7 +1,7 @@
 package com.rentalhive.rentalhive.controller;
 
 import com.rentalhive.rentalhive.model.Estimate;
-import com.rentalhive.rentalhive.service.EstimateService;
+import com.rentalhive.rentalhive.service.impl.EstimateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +47,6 @@ public class EstimateController {
             @RequestBody Estimate updatedEstimate,
             @RequestParam int userId) {
 
-        // Rest of your code
         Estimate updatedEstimateResult = estimateService.updateEstimateStatus(id, updatedEstimate, userId);
         return ResponseEntity.ok(updatedEstimateResult);
     }
