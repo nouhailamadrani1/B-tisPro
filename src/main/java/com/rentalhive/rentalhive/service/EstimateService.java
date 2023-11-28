@@ -106,4 +106,27 @@ public class EstimateService {
         }
     }
 
+    public Estimate updateEstimateStatus(int id, Estimate updatedEstimate, int userId) {
+        Estimate existingEstimate = estimateRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Estimate not found with ID: " + id));
+
+        // Validate that the user making the update is the same as the user who created the RentalRequest
+        validateUserForEstimateUpdate(userId, existingEstimate);
+
+        // Update the estimate status
+        existingEstimate.setEstimateStatus(updatedEstimate.getEstimateStatus());
+
+        // Additional validation or business logic can be added here if needed
+
+        return estimateRepository.save(existingEstimate);
+    }
+
+    private void validateUserForEstimateUpdate(int userId, Estimate estimate) {
+        RentalRequest rentalRequest = estimate.getRentalRequest();
+
+        if (rentalRequest == null || rentalRequest.getClient() == null || rentalRequest.getClient().getId() != userId) {
+            throw new InvalidEstimateException("You are not authorized to update the estimate status for this request.");
+        }
+    }
+
 }
