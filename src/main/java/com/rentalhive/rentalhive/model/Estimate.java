@@ -2,7 +2,6 @@ package com.rentalhive.rentalhive.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.rentalhive.rentalhive.service.ContractService;
 import lombok.*;
 
 import javax.persistence.*;

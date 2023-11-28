@@ -3,6 +3,7 @@ package com.rentalhive.rentalhive.service;
 import com.rentalhive.rentalhive.exceptions.InvalidEstimateException;
 import com.rentalhive.rentalhive.model.*;
 import com.rentalhive.rentalhive.repository.EstimateRepository;
+import com.rentalhive.rentalhive.service.impl.RentalRequestServiceImpl;
 import com.rentalhive.rentalhive.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class EstimateService {
     @Autowired
     private EstimateRepository estimateRepository;
     @Autowired
-    private RentalRequestService rentalRequestService;
+    private RentalRequestServiceImpl rentalRequestService;
 
     @Autowired
     private UserServiceImpl userService;

@@ -1,6 +1,7 @@
-package com.rentalhive.rentalhive.service;
+package com.rentalhive.rentalhive.service.impl;
 
 import com.rentalhive.rentalhive.model.RentalRequest;
+import com.rentalhive.rentalhive.service.RentalRequestServiceInterface;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.rentalhive.rentalhive.repository.RentalRequestRepository;
@@ -13,13 +14,13 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class RentalRequestService {
+public class RentalRequestServiceImpl implements RentalRequestServiceInterface {
 
     @Autowired
     private RentalRequestRepository rentalRequestRepository;
 
     @Autowired
-    private FileService fileService;
+    private FileServiceImpl fileServiceImpl;
 
     public List<RentalRequest> getAllRentalRequests() {
         return rentalRequestRepository.findAll();
@@ -69,7 +70,7 @@ public class RentalRequestService {
         file1.setPath("src/main/resources/files/"+ file.getOriginalFilename());
         file1.setRentalRequest(getRentalRequestById(rentalRequestId));
 
-        fileService.saveFile(file1);
+        fileServiceImpl.saveFile(file1);
     }
 
 
