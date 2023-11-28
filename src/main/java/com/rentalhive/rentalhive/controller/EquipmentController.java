@@ -2,7 +2,7 @@ package com.rentalhive.rentalhive.controller;
 
 
 import com.rentalhive.rentalhive.model.Equipment;
-import com.rentalhive.rentalhive.service.impl.EquipmentService;
+import com.rentalhive.rentalhive.service.impl.EquipmentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,35 +14,35 @@ import java.util.Optional;
 public class EquipmentController {
 
     @Autowired
-    private EquipmentService equipmentService;
+    private EquipmentServiceImpl equipmentServiceImpl;
 
     @GetMapping
     public List<Equipment> getAllEquipment() {
-        return equipmentService.getAllEquipment();
+        return equipmentServiceImpl.getAllEquipment();
     }
 
     @GetMapping("/{id}")
     public Optional<Equipment> getEquipmentById(@PathVariable int id) {
-        return equipmentService.getEquipmentById(id);
+        return equipmentServiceImpl.getEquipmentById(id);
     }
 
     @PostMapping
     public Equipment addEquipment(@RequestBody Equipment equipment) {
-        return equipmentService.addEquipment(equipment);
+        return equipmentServiceImpl.addEquipment(equipment);
     }
 
     @PutMapping("/{id}")
     public Equipment updateEquipment(@PathVariable int id, @RequestBody Equipment equipment) {
-        return equipmentService.updateEquipment(id, equipment);
+        return equipmentServiceImpl.updateEquipment(id, equipment);
     }
 
     @DeleteMapping("/{id}")
     public void deleteEquipment(@PathVariable int id) {
-        equipmentService.deleteEquipment(id);
+        equipmentServiceImpl.deleteEquipment(id);
     }
 
     @GetMapping("/E-name/{name}")
     public Equipment getEquipmentByName(@PathVariable String name) {
-        return equipmentService.getEquipmentByName(name);
+        return equipmentServiceImpl.getEquipmentByName(name);
     }
 }

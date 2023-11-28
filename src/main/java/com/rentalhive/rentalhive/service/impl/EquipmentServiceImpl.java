@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EquipmentService implements EquipmentServiceInterface {
+public class EquipmentServiceImpl implements EquipmentServiceInterface {
 
     @Autowired
     private EquipmentRepository equipmentRepository;

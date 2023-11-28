@@ -1,8 +1,10 @@
 package com.rentalhive.rentalhive.controller;
 
+import com.rentalhive.rentalhive.dto.EstimateDTO;
 import com.rentalhive.rentalhive.model.Estimate;
-import com.rentalhive.rentalhive.service.impl.EstimateService;
+import com.rentalhive.rentalhive.service.impl.EstimateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,40 +16,44 @@ import java.util.Optional;
 public class EstimateController {
 
     @Autowired
-    private EstimateService estimateService;
+    private EstimateServiceImpl estimateServiceImpl;
 
     @GetMapping
-    public List<Estimate> getAllEstimates() {
-        return estimateService.getAllEstimates();
+    public List<EstimateDTO> getAllEstimates() {
+        return estimateServiceImpl.getAllEstimates();
     }
 
     @GetMapping("/{id}")
-    public Optional<Estimate> getEstimateById(@PathVariable int id) {
-        return estimateService.getEstimateById(id);
+    public ResponseEntity<EstimateDTO> getEstimateById(@PathVariable int id) {
+        return estimateServiceImpl.getEstimateById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Estimate addEstimate(@RequestBody Estimate estimate) {
-        return estimateService.addEstimate(estimate);
+    public ResponseEntity<EstimateDTO> addEstimate(@RequestBody EstimateDTO estimateDTO) {
+        EstimateDTO addedEstimateDTO = estimateServiceImpl.addEstimate(estimateDTO);
+        return new ResponseEntity<>(addedEstimateDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public void updateEstimate(@PathVariable int id, @RequestBody Estimate estimate) {
-        estimateService.updateEstimate(id, estimate);
+    public ResponseEntity<EstimateDTO> updateEstimate(@PathVariable int id, @RequestBody EstimateDTO estimateDTO) {
+        EstimateDTO updatedEstimateDTO = estimateServiceImpl.updateEstimate(id, estimateDTO);
+        return ResponseEntity.ok(updatedEstimateDTO);
     }
 
     @DeleteMapping("/{id}")
     public void deleteEstimate(@PathVariable int id) {
-        estimateService.deleteEstimate(id);
+        estimateServiceImpl.deleteEstimate(id);
     }
 
     @PutMapping("/{id}/updateStatus")
-    public ResponseEntity<Estimate> updateEstimateStatus(
+    public ResponseEntity<EstimateDTO> updateEstimateStatus(
             @PathVariable int id,
-            @RequestBody Estimate updatedEstimate,
+            @RequestBody EstimateDTO updatedEstimateDTO,
             @RequestParam int userId) {
 
-        Estimate updatedEstimateResult = estimateService.updateEstimateStatus(id, updatedEstimate, userId);
+        EstimateDTO updatedEstimateResult = estimateServiceImpl.updateEstimateStatus(id, updatedEstimateDTO, userId);
         return ResponseEntity.ok(updatedEstimateResult);
     }
 

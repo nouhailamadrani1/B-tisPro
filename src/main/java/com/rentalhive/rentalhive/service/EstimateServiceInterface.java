@@ -1,21 +1,21 @@
 package com.rentalhive.rentalhive.service;
 
+import com.rentalhive.rentalhive.dto.EstimateDTO;
 import com.rentalhive.rentalhive.model.Estimate;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface EstimateServiceInterface {
-    List<Estimate> getAllEstimates();
+    List<EstimateDTO> getAllEstimates();
 
-    Optional<Estimate> getEstimateById(int id);
+    Optional<EstimateDTO> getEstimateById(int id);
 
-    Estimate addEstimate(Estimate estimate);
+    EstimateDTO addEstimate(EstimateDTO estimateDTO);
 
-    void updateEstimate(int id, Estimate estimate);
+    EstimateDTO updateEstimate(int id, EstimateDTO updatedEstimateDTO);
 
     void deleteEstimate(int id);
 
-    Estimate updateEstimateStatus(int id, Estimate updatedEstimate, int userId);
-
+    EstimateDTO updateEstimateStatus(int id, EstimateDTO updatedEstimateDTO, int userId);
 }

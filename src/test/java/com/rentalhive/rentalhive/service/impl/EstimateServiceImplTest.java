@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
-class EstimateServiceTest {
+class EstimateServiceImplTest {
 
     @Mock
     private EstimateRepository estimateRepository;
 
     @InjectMocks
-    private EstimateService estimateService;
+    private EstimateServiceImpl estimateServiceImpl;
 
     @Test
     void testGetAllEstimates() {
@@ -32,7 +32,7 @@ class EstimateServiceTest {
 
         Mockito.when(estimateRepository.findAll()).thenReturn(expectedEstimates);
 
-        List<Estimate> actualEstimates = estimateService.getAllEstimates();
+        List<Estimate> actualEstimates = estimateServiceImpl.getAllEstimates();
 
         assertEquals(expectedEstimates.size(), actualEstimates.size());
         assertTrue(actualEstimates.containsAll(expectedEstimates));
@@ -46,7 +46,7 @@ class EstimateServiceTest {
 
         Mockito.when(estimateRepository.findById(estimateId)).thenReturn(Optional.of(expectedEstimate));
 
-        Optional<Estimate> actualEstimate = estimateService.getEstimateById(estimateId);
+        Optional<Estimate> actualEstimate = estimateServiceImpl.getEstimateById(estimateId);
 
         assertTrue(actualEstimate.isPresent());
         assertEquals(expectedEstimate, actualEstimate.get());
@@ -58,9 +58,9 @@ class EstimateServiceTest {
 
         Mockito.when(estimateRepository.findById(nonExistentId)).thenReturn(Optional.empty());
 
-        Optional<Estimate> actualEstimate = estimateService.getEstimateById(nonExistentId);
+        Optional<Estimate> actualEstimate = estimateServiceImpl.getEstimateById(nonExistentId);
 
         assertTrue(actualEstimate.isEmpty());
     }
-    
+
 }
