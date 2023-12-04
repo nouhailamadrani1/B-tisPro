@@ -1,10 +1,11 @@
-package com.rentalhive.rentalhive.service;
+package com.rentalhive.rentalhive.service.impl;
 
 import com.rentalhive.rentalhive.exceptions.*;
 import com.rentalhive.rentalhive.model.Equipment;
 import com.rentalhive.rentalhive.model.EquipmentStatus;
 import com.rentalhive.rentalhive.model.EquipmentType;
 import com.rentalhive.rentalhive.repository.EquipmentRepository;
+import com.rentalhive.rentalhive.service.EquipmentServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EquipmentService {
+public class EquipmentServiceImpl implements EquipmentServiceInterface {
 
     @Autowired
     private EquipmentRepository equipmentRepository;

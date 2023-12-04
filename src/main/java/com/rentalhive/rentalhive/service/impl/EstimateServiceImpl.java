@@ -1,10 +1,10 @@
-package com.rentalhive.rentalhive.service;
+package com.rentalhive.rentalhive.service.impl;
 
+import com.rentalhive.rentalhive.dto.EstimateDTO;
 import com.rentalhive.rentalhive.exceptions.InvalidEstimateException;
 import com.rentalhive.rentalhive.model.*;
 import com.rentalhive.rentalhive.repository.EstimateRepository;
-import com.rentalhive.rentalhive.service.impl.RentalRequestServiceImpl;
-import com.rentalhive.rentalhive.service.impl.UserServiceImpl;
+import com.rentalhive.rentalhive.service.EstimateServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,10 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class EstimateService {
+public class EstimateServiceImpl implements EstimateServiceInterface {
 
     @Autowired
     private EstimateRepository estimateRepository;
@@ -26,38 +27,68 @@ public class EstimateService {
     @Autowired
     private UserServiceImpl userService;
 
-
-    public List<Estimate> getAllEstimates() {
-        return (List<Estimate>) estimateRepository.findAll();
+    public EstimateDTO convertToDTO(Estimate estimate) {
+        return new EstimateDTO(
+                estimate.getId(),
+                estimate.getEstimatedCost(),
+                estimate.getEstimateStatus(),
+                estimate.getRentalRequest(),
+                estimate.getAdmin(),
+                estimate.isArchived()
+        );
     }
 
-    public Optional<Estimate> getEstimateById(int id) {
-        return estimateRepository.findById(id);
+    public List<EstimateDTO> getAllEstimates() {
+        List<Estimate> estimates = (List<Estimate>) estimateRepository.findAll();
+        return estimates.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-    public Estimate addEstimate(Estimate estimate) {
+    public Optional<EstimateDTO> getEstimateById(int id) {
+        return estimateRepository.findById(id)
+                .map(this::convertToDTO);
+    }
 
-        validateAdminRole(estimate.getAdmin().getId());
+    public EstimateDTO addEstimate(EstimateDTO estimateDTO) {
+        validateAdminRole(estimateDTO.getAdmin().getId());
+
+        Estimate estimate = new Estimate();
         estimate.setEstimateStatus(EstimateStatus.Pending);
 
-        // Calculate estimatedCost based on rental request start and end dates
-        calculateEstimatedCost(estimate);
+        calculateEstimatedCost(estimateDTO);
 
-        return estimateRepository.save(estimate);
-    }
-
-    public void updateEstimate(int id, Estimate estimate) {
-
-        validateAdminRole(estimate.getAdmin().getId());
-        validateEstimatedCost(estimate);
-
-        estimate.setId(id);
+        estimate.setId(estimateDTO.getId());
+        estimate.setEstimatedCost(estimateDTO.getEstimatedCost());
+        estimate.setRentalRequest(estimateDTO.getRentalRequest());
+        estimate.setAdmin(estimateDTO.getAdmin());
+        estimate.setArchived(estimateDTO.isArchived());
 
         estimateRepository.save(estimate);
+
+        return estimateDTO;
+    }
+
+    public EstimateDTO updateEstimate(int id, EstimateDTO updatedEstimateDTO) {
+        Estimate existingEstimate = estimateRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Estimate not found with ID: " + id));
+
+        validateAdminRole(updatedEstimateDTO.getAdmin().getId());
+        validateEstimatedCost(updatedEstimateDTO);
+
+        existingEstimate.setId(id);
+        existingEstimate.setEstimatedCost(updatedEstimateDTO.getEstimatedCost());
+        existingEstimate.setRentalRequest(updatedEstimateDTO.getRentalRequest());
+        existingEstimate.setAdmin(updatedEstimateDTO.getAdmin());
+        existingEstimate.setArchived(updatedEstimateDTO.isArchived());
+
+        estimateRepository.save(existingEstimate);
+
+        return updatedEstimateDTO;
     }
 
     public void deleteEstimate(int id) {
-        Optional<Estimate> estimate = getEstimateById(id);
+        Optional<EstimateDTO> estimate = getEstimateById(id);
 
         RentalRequest rentalRequest = estimate.get().getRentalRequest();
 
@@ -66,7 +97,7 @@ public class EstimateService {
         estimateRepository.deleteById(id);
     }
 
-    private void calculateEstimatedCost(Estimate estimate) {
+    private void calculateEstimatedCost(EstimateDTO estimate) {
         RentalRequest rentalRequest = rentalRequestService.getRentalRequestById(estimate.getRentalRequest().getId());
 
         if (rentalRequest == null || rentalRequest.getStart_date() == null || rentalRequest.getEnd_date() == null) {
@@ -90,7 +121,7 @@ public class EstimateService {
         estimate.setEstimatedCost(estimatedCost);
     }
 
-    private void validateEstimatedCost(Estimate estimate) {
+    private void validateEstimatedCost(EstimateDTO estimate) {
 
         Double estimatedCost = estimate.getEstimatedCost();
 
@@ -108,20 +139,20 @@ public class EstimateService {
         }
     }
 
-    public Estimate updateEstimateStatus(int id, Estimate updatedEstimate, int userId) {
+    public EstimateDTO updateEstimateStatus(int id, EstimateDTO updatedEstimateDTO, int userId) {
         Estimate existingEstimate = estimateRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Estimate not found with ID: " + id));
 
         // Validate that the user making the update is the same as the user who created the RentalRequest
         validateUserForEstimateUpdate(userId, existingEstimate);
 
-        // Update the estimate status
-        existingEstimate.setEstimateStatus(updatedEstimate.getEstimateStatus());
+        existingEstimate.setEstimateStatus(updatedEstimateDTO.getEstimateStatus());
 
-        // Additional validation or business logic can be added here if needed
+        estimateRepository.save(existingEstimate);
 
-        return estimateRepository.save(existingEstimate);
+        return updatedEstimateDTO;
     }
+
 
     private void validateUserForEstimateUpdate(int userId, Estimate estimate) {
         RentalRequest rentalRequest = estimate.getRentalRequest();

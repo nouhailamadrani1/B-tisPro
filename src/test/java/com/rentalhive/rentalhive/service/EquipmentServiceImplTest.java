@@ -3,8 +3,7 @@ package com.rentalhive.rentalhive.service;
 import com.rentalhive.rentalhive.model.Equipment;
 import com.rentalhive.rentalhive.model.EquipmentStatus;
 import com.rentalhive.rentalhive.repository.EquipmentRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.rentalhive.rentalhive.service.impl.EquipmentServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class EquipmentServiceTest {
+class EquipmentServiceImplTest {
 
     @Autowired
-    private EquipmentService equipmentService;
+    private EquipmentServiceImpl equipmentServiceImpl;
 
     @Autowired
     private EquipmentRepository equipmentRepository;
@@ -29,7 +28,7 @@ class EquipmentServiceTest {
     @Test
     public void testGetAllEquipment() {
         // Assuming you have some equipment already in the database
-        List<Equipment> equipmentList = equipmentService.getAllEquipment();
+        List<Equipment> equipmentList = equipmentServiceImpl.getAllEquipment();
         assertNotNull(equipmentList);
         assertFalse(equipmentList.isEmpty());
     }
@@ -37,7 +36,7 @@ class EquipmentServiceTest {
     @Test
     public void testGetEquipmentById() {
         // Assuming there is an equipment with ID 1 in the database
-        Optional<Equipment> equipmentOptional = equipmentService.getEquipmentById(1);
+        Optional<Equipment> equipmentOptional = equipmentServiceImpl.getEquipmentById(1);
         assertTrue(equipmentOptional.isPresent());
     }
 
@@ -49,7 +48,7 @@ class EquipmentServiceTest {
         newEquipment.setPrice(200.0);
         newEquipment.setStatus(EquipmentStatus.AVAILABLE);
 
-        Equipment addedEquipment = equipmentService.addEquipment(newEquipment);
+        Equipment addedEquipment = equipmentServiceImpl.addEquipment(newEquipment);
 
         assertNotNull(addedEquipment);
         assertNotNull(addedEquipment.getId());
@@ -68,14 +67,14 @@ class EquipmentServiceTest {
         newEquipment.setQuantity(10);
         newEquipment.setStatus(EquipmentStatus.AVAILABLE);
         newEquipment.setPrice(88.0);
-        Equipment addedEquipment = equipmentService.addEquipment(newEquipment);
+        Equipment addedEquipment = equipmentServiceImpl.addEquipment(newEquipment);
 
         // Search for the equipment by EquipmentName
-        Equipment foundEquipment = equipmentService.getEquipmentByName("Equipment UpdateTest");
+        Equipment foundEquipment = equipmentServiceImpl.getEquipmentByName("Equipment UpdateTest");
 
         // Update the quantity
         foundEquipment.setQuantity(20);
-        Equipment updatedEquipment = equipmentService.updateEquipment(foundEquipment.getId(), foundEquipment);
+        Equipment updatedEquipment = equipmentServiceImpl.updateEquipment(foundEquipment.getId(), foundEquipment);
 
         assertNotNull(updatedEquipment);
         assertEquals(20, updatedEquipment.getQuantity());
@@ -84,7 +83,7 @@ class EquipmentServiceTest {
     @Test //this test will try to delete an equipment with id 1
     public void testDeleteEquipment() {
         // Assuming there is an equipment with ID 1 in the database
-        equipmentService.deleteEquipment(1);
+        equipmentServiceImpl.deleteEquipment(1);
 
         // Verify that the equipment is no longer in the database
         Optional<Equipment> deletedEquipment = equipmentRepository.findById(1);
@@ -102,7 +101,7 @@ class EquipmentServiceTest {
         equipmentRepository.save(sampleEquipment);
 
         // Perform the test
-        Equipment foundEquipment = equipmentService.getEquipmentByName("Sample Equipment");
+        Equipment foundEquipment = equipmentServiceImpl.getEquipmentByName("Sample Equipment");
 
         assertNotNull(foundEquipment);
         assertEquals("Sample Equipment", foundEquipment.getName());
