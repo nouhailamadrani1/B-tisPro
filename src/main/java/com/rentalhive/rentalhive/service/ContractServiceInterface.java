@@ -1,16 +1,20 @@
 package com.rentalhive.rentalhive.service;
 
+import com.rentalhive.rentalhive.dto.ContractDTO;
 import com.rentalhive.rentalhive.model.Estimate;
+
+import java.io.IOException;
+import java.util.List;
 
 import java.util.List;
 
 public interface ContractServiceInterface {
 
-    String checkEstimateStatusUpdate(int id);
+    byte[] generateContractPDF(int id);
 
-    List<Estimate> getAllApprovedEstimatesForClient(int clientId);
+    List<ContractDTO> getAllApprovedEstimatesForClient(int clientId);
 
     String archiveContract(int id);
 
-    List<Estimate> getAllNonArchivedEstimatesForClient(int clientId);
+    List<ContractDTO> getAllNonArchivedEstimatesForClient(int clientId);
 }

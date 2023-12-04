@@ -2,10 +2,7 @@ package com.rentalhive.rentalhive.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-<<<<<<< HEAD
 
-=======
->>>>>>> 4c030c66fcfd3623caa867f45110feba278af233
 import lombok.*;
 
 import javax.persistence.*;
